@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="icon" type="image/x-icon" href="https://imgur.com/WGQwTEM.jpeg">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Login</title>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js" type="module"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js" type="module"></script>
+    <script src="login.js" type="module" defer></script>
+</head>
+
+<body>
+    <header class="top-header"
+        style="display: flex; justify-content: space-between; align-items: center; height: 100px; padding: 0 5%; background-color: white; border-bottom: 2px solid #B3E0F2; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+        <div class="site-logo" style="transition: all 0.3s ease;">
+            <a href="index.html"><img src="https://imgur.com/WGQwTEM.jpeg" alt="logo-trafix" width="150"
+                    height="140"></a>
+        </div>
+        <nav class="top-menu" style="display: flex; gap: 30px;">
+            <a href="index.html" class="menu-link"
+                style="text-decoration: none; color: rgb(0,0,0); font-weight: 600; font-size: 18px; padding: 5px 0; transition: all 0.3s ease;">Home</a>
+            <a href="login.html" id="userIconNav" class="menu-link"
+                style="text-decoration: none; color: rgb(0,0,0); font-weight: 600; font-size: 18px; padding: 5px 0; transition: all 0.3s ease;"><img
+                    src="https://imgur.com/WGQwTEM.jpeg" alt="User"
+                    style="height:28px;width:28px;border-radius:50%;vertical-align:middle;object-fit:cover;"></a>
+            <a href="map-fullpage.html" class="menu-link"
+                style="text-decoration: none; color: rgb(0,0,0); font-weight: 600; font-size: 18px; padding: 5px 0; transition: all 0.3s ease;">Map</a>
+        </nav>
+    </header>
+    <div id="userDisplayName"
+        style="position:fixed;top:20px;right:180px;z-index:100;font-size:1.1em;font-weight:600;color:#2563eb;background:#fff;padding:8px 18px;border-radius:18px;box-shadow:0 2px 8px rgba(37,99,235,0.10);display:none;">
+    </div>
+    <script>
+        // Update nav bar login/logout and user display name
+        function updateUserDisplayName() {
+            const el = document.getElementById('userDisplayName');
+            const name = localStorage.getItem('trafix_user_name');
+            if (localStorage.getItem('trafix_logged_in') === 'true' && name) {
+                el.textContent = `Welcome, ${name}!`;
+                el.style.display = 'block';
+            } else {
+                el.textContent = '';
+                el.style.display = 'none';
+            }
+        }
+        document.addEventListener('DOMContentLoaded', function () {
+            updateUserDisplayName();
+            // Set up user icon nav click for login/logout
+            const userIconNav = document.getElementById('userIconNav');
+            if (userIconNav) {
+                userIconNav.onclick = function (e) {
+                    if (localStorage.getItem('trafix_logged_in') === 'true') {
+                        e.preventDefault();
+                        localStorage.setItem('trafix_logged_in', 'false');
+                        localStorage.removeItem('trafix_user_name');
+                        localStorage.removeItem('trafix_user_email');
+                        updateUserDisplayName();
+                        window.location.reload();
+                    } // else, default link to login.html
+                };
+            }
+        });
+        window.addEventListener('storage', updateUserDisplayName);
+    </script>
+    <h1>Login</h1>
+    <form id="login-form">
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <button type="submit">Login</button>
+    </form>
+    <p id="error-message"></p>
+    <p>Don't have an account? <a href="#" id="show-register">Register</a></p>
+
+    <form id="register-form" style="display: none;">
+        <h1>Register</h1>
+        <input type="email" id="register-email" placeholder="Email" required>
+        <input type="password" id="register-password" placeholder="Password" required>
+        <button type="submit">Register</button>
+        <p id="register-error-message" style="display: none; color: red;"></p>
+        <p>Already have an account? <a href="#" id="show-login">Login</a></p>
+    </form>
+
+    <div id="notification" style="display: none;"></div>
+    <h2 id="welcome-message" style="display: none;"></h2>
+    <button id="logout-button" style="display: none;">Logout</button>
+</body>
+
+</html>

@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+     <script>
+          // Update nav bar login/logout and user display name
+          function updateUserDisplayName() {
+               const el = document.getElementById('userDisplayName');
+               const name = localStorage.getItem('trafix_user_name');
+               if (localStorage.getItem('trafix_logged_in') === 'true' && name) {
+                    el.textContent = `Welcome, ${name}!`;
+                    el.style.display = 'block';
+               } else {
+                    el.textContent = '';
+                    el.style.display = 'none';
+               }
+          }
+          document.addEventListener('DOMContentLoaded', function () {
+               // Nav bar login/logout
+               const nav = document.querySelector('.top-menu');
+               if (nav) {
+                    let loginLink = nav.querySelector('a.menu-link[href="login.html"]');
+                    if (loginLink) {
+                         if (localStorage.getItem('trafix_logged_in') === 'true') {
+                              loginLink.textContent = 'Logout';
+                              loginLink.onclick = function (e) {
+                                   e.preventDefault();
+                                   localStorage.setItem('trafix_logged_in', 'false');
+                                   localStorage.removeItem('trafix_user_name');
+                                   localStorage.removeItem('trafix_user_email');
+                                   updateUserDisplayName();
+                                   window.location.reload();
+                              };
+                         } else {
+                              loginLink.textContent = 'Login';
+                              loginLink.onclick = null;
+                         }
+                    }
+               }
+               updateUserDisplayName();
+          });
+          window.addEventListener('storage', updateUserDisplayName);
+     </script>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Trafix | A Commuter's Guide</title>
+     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+     <link rel="icon" type="image/x-icon" href="https://imgur.com/WGQwTEM.jpeg">
+     <style>
+          /* Color Palette */
+          :root {
+               --soft-blue-bg: #E0F2F7;
+               --light-blue: #B3E0F2;
+               --medium-blue: #87CEEB;
+               --dark-blue: #4682B4;
+               --text-primary: #2F4F4F;
+               --accent-blue: #1e3c72;
+               --hero-text-color: #FFFFFF;
+               --hero-button-primary-bg: #FFFFFF;
+               --hero-button-primary-text: #2F4F4F;
+               --gradient-start: #1e3c72;
+               --gradient-end: #2a5298;
+          }
+
+          * {
+               box-sizing: border-box;
+               margin: 0;
+               padding: 0;
+          }
+
+          body {
+               font-family: 'Poppins', sans-serif;
+               margin: 0;
+               padding: 0;
+               text-align: center;
+               background-color: var(--soft-blue-bg);
+               color: var(--text-primary);
+               line-height: 1.6;
+          }
+
+          html {
+               scroll-behavior: smooth;
+          }
+
+          .top-header {
+               display: flex;
+               justify-content: space-between;
+               align-items: center;
+               height: 100px;
+               padding: 0 5%;
+               background-color: white;
+               border-bottom: 2px solid var(--light-blue);
+               position: sticky;
+               top: 0;
+               z-index: 1000;
+               box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+          }
+
+          .site-logo {
+               transition: all 0.3s ease;
+          }
+
+          .site-logo:hover {
+               transform: scale(1.05);
+          }
+
+          .site-logo img {
+               max-width: 100%;
+               height: auto;
+          }
+
+          .mobile-menu-toggle {
+               display: none;
+               background: none;
+               border: none;
+               color: var(--dark-blue);
+               font-size: 24px;
+               cursor: pointer;
+          }
+
+          .top-menu {
+               display: flex;
+               gap: 30px;
+          }
+
+          .menu-link {
+               text-decoration: none;
+               color: rgb(0, 0, 0);
+               font-weight: 600;
+               font-size: 18px;
+               padding: 5px 0;
+               transition: all 0.3s ease;
+          }
+
+          .menu-link:hover {
+               color: var(--dark-blue);
+               text-decoration: underline;
+          }
+
+          /* New Creative Hero Section with Blue Gradient */
+          .hero-section {
+               position: relative;
+               width: 100%;
+               height: 100vh;
+               background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+               display: flex;
+               align-items: center;
+               justify-content: center;
+               overflow: hidden;
+          }
+
+          /* Animated Background Elements */
+          .hero-bg-elements {
+               position: absolute;
+               top: 0;
+               left: 0;
+               width: 100%;
+               height: 100%;
+               overflow: hidden;
+               z-index: 1;
+          }
+
+          .floating-shape {
+               position: absolute;
+               background: rgba(255, 255, 255, 0.1);
+               border-radius: 50%;
+               animation: float 6s ease-in-out infinite;
+          }
+
+          .shape-1 {
+               width: 80px;
+               height: 80px;
+               top: 20%;
+               left: 10%;
+               animation-delay: 0s;
+          }
+
+          .shape-2 {
+               width: 120px;
+               height: 120px;
+               top: 60%;
+               right: 15%;
+               animation-delay: 2s;
+          }
+
+          .shape-3 {
+               width: 60px;
+               height: 60px;
+               top: 80%;
+               left: 20%;
+               animation-delay: 4s;
+          }
+
+          .shape-4 {
+               width: 100px;
+               height: 100px;
+               top: 10%;
+               right: 30%;
+               animation-delay: 1s;
+          }
+
+          @keyframes float {
+
+               0%,
+               100% {
+                    transform: translateY(0px) rotate(0deg);
+               }
+
+               50% {
+                    transform: translateY(-20px) rotate(180deg);
+               }
+          }
+
+          /* Hero Content Container */
+          .hero-container {
+               position: relative;
+               z-index: 2;
+               display: grid;
+               grid-template-columns: 1fr 1fr;
+               gap: 60px;
+               max-width: 1200px;
+               width: 100%;
+               padding: 0 40px;
+               align-items: center;
+          }
+
+          .hero-content {
+               text-align: left;
+               color: var(--hero-text-color);
+          }
+
+          .hero-subtitle {
+               font-size: 1.2rem;
+               font-weight: 300;
+               margin-bottom: 20px;
+               opacity: 0.9;
+               letter-spacing: 2px;
+               text-transform: uppercase;
+          }
+
+          .hero-title {
+               font-family: 'Poppins', sans-serif;
+               font-size: 4rem;
+               font-weight: 700;
+               line-height: 1.1;
+               margin-bottom: 30px;
+               background: linear-gradient(45deg, #ffffff, #e6f3ff);
+               -webkit-background-clip: text;
+               -webkit-text-fill-color: transparent;
+               background-clip: text;
+          }
+
+          .hero-description {
+               font-size: 1.1rem;
+               line-height: 1.6;
+               margin-bottom: 40px;
+               opacity: 0.9;
+               max-width: 500px;
+          }
+
+          .hero-buttons {
+               display: flex;
+               gap: 20px;
+               flex-wrap: wrap;
+          }
+
+          .button-primary {
+               display: inline-flex;
+               align-items: center;
+               gap: 10px;
+               padding: 15px 35px;
+               border-radius: 50px;
+               text-decoration: none;
+               font-weight: 600;
+               font-size: 1rem;
+               transition: all 0.3s ease;
+               cursor: pointer;
+               background-color: var(--hero-button-primary-bg);
+               color: var(--hero-button-primary-text);
+               border: none;
+               box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+               position: relative;
+               overflow: hidden;
+          }
+
+          .button-primary::before {
+               content: '';
+               position: absolute;
+               top: 0;
+               left: -100%;
+               width: 100%;
+               height: 100%;
+               background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+               transition: left 0.5s;
+          }
+
+          .button-primary:hover::before {
+               left: 100%;
+          }
+
+          .button-primary:hover {
+               transform: translateY(-3px);
+               box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+          }
+
+
+          /* Hero Visual Section */
+          .hero-visual {
+               position: relative;
+               display: flex;
+               align-items: center;
+               justify-content: center;
+               height: 500px;
+          }
+
+          .visual-container {
+               position: relative;
+               width: 400px;
+               height: 400px;
+               border-radius: 50%;
+               background: rgba(255, 255, 255, 0.1);
+               backdrop-filter: blur(20px);
+               border: 1px solid rgba(255, 255, 255, 0.2);
+               display: flex;
+               align-items: center;
+               justify-content: center;
+               animation: pulse 4s ease-in-out infinite;
+          }
+
+          @keyframes pulse {
+
+               0%,
+               100% {
+                    transform: scale(1);
+                    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
+               }
+
+               50% {
+                    transform: scale(1.05);
+                    box-shadow: 0 0 0 20px rgba(255, 255, 255, 0);
+               }
+          }
+
+          .commuter-gif {
+               width: 300px;
+               height: 300px;
+               border-radius: 50%;
+               object-fit: cover;
+               border: 3px solid rgba(255, 255, 255, 0.3);
+          }
+
+          /* Orbiting Elements */
+          .orbit-element {
+               position: absolute;
+               width: 60px;
+               height: 60px;
+               background: rgba(255, 255, 255, 0.15);
+               border-radius: 50%;
+               display: flex;
+               align-items: center;
+               justify-content: center;
+               color: white;
+               font-size: 24px;
+               animation: orbit 8s linear infinite;
+          }
+
+          .orbit-1 {
+               top: -30px;
+               left: 50%;
+               transform: translateX(-50%);
+               animation-delay: 0s;
+          }
+
+          .orbit-2 {
+               top: 50%;
+               right: -30px;
+               transform: translateY(-50%);
+               animation-delay: 2s;
+          }
+
+          .orbit-3 {
+               bottom: -30px;
+               left: 50%;
+               transform: translateX(-50%);
+               animation-delay: 4s;
+          }
+
+          .orbit-4 {
+               top: 50%;
+               left: -30px;
+               transform: translateY(-50%);
+               animation-delay: 6s;
+          }
+
+          @keyframes orbit {
+               0% {
+                    transform: rotate(0deg) translateX(200px) rotate(0deg);
+               }
+
+               100% {
+                    transform: rotate(360deg) translateX(200px) rotate(-360deg);
+               }
+          }
+
+          /* Stats Section */
+          .hero-stats {
+               position: absolute;
+               bottom: 40px;
+               left: 50%;
+               transform: translateX(-50%);
+               display: flex;
+               gap: 60px;
+               z-index: 2;
+          }
+
+          .stat-item {
+               text-align: center;
+               color: white;
+          }
+
+          .stat-number {
+               font-size: 2rem;
+               font-weight: 700;
+               margin-bottom: 5px;
+          }
+
+          .stat-label {
+               font-size: 0.9rem;
+               opacity: 0.8;
+               text-transform: uppercase;
+               letter-spacing: 1px;
+          }
+
+          .main-container {
+               width: 90%;
+               max-width: 1200px;
+               margin: auto;
+               padding: 20px 0;
+          }
+
+          .content-section {
+               display: flex;
+               align-items: center;
+               justify-content: space-between;
+               margin: 60px 0;
+               border-top: 2px solid var(--dark-blue);
+               padding-top: 40px;
+               gap: 40px;
+          }
+
+          .content-section:nth-child(even) {
+               flex-direction: row-reverse;
+          }
+
+          .section-image {
+               width: 50%;
+               height: 350px;
+               border-radius: 15px;
+               background-size: cover;
+               background-position: center;
+               transition: all 0.3s ease;
+               box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+               overflow: hidden;
+          }
+
+          .section-image:hover {
+               transform: scale(1.02);
+               box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+          }
+
+          .section-text {
+               width: 50%;
+               text-align: left;
+          }
+
+          .section-title {
+               font-size: 28px;
+               margin-bottom: 20px;
+               color: var(--dark-blue);
+               position: relative;
+               display: inline-block;
+               padding-bottom: 10px;
+               border-bottom: 3px solid var(--dark-blue);
+          }
+
+          .section-paragraph {
+               line-height: 1.8;
+               margin-bottom: 25px;
+               font-size: 16px;
+          }
+
+          .pink-button {
+               display: inline-block;
+               padding: 10px 25px;
+               border: none;
+               background-color: var(--accent-blue);
+               color: white;
+               border-radius: 30px;
+               text-decoration: none;
+               font-size: 16px;
+               font-weight: 500;
+               transition: all 0.3s ease;
+               box-shadow: 0 3px 10px #1e3c72;
+          }
+
+          .pink-button:hover {
+               background-color: var(--dark-blue);
+               transform: translateY(-3px);
+               box-shadow: 0 5px 15px #2a5298;
+          }
+
+          .features-section {
+               background-color: var(--light-blue);
+               padding: 60px 0;
+               margin: 60px 0;
+          }
+
+          .features-heading {
+               font-size: 32px;
+               color: var(--dark-blue);
+               margin-bottom: 50px;
+          }
+
+          .features-container {
+               display: grid;
+               grid-template-columns: repeat(4, 1fr);
+               gap: 30px;
+               max-width: 1200px;
+               margin: 0 auto;
+               padding: 0 20px;
+          }
+
+          .feature-box {
+               background-color: white;
+               border-radius: 15px;
+               padding: 30px 20px;
+               text-align: center;
+               box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+               transition: all 0.3s ease;
+          }
+
+          .feature-box:hover {
+               transform: translateY(-10px);
+               box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+          }
+
+          .feature-icon {
+               font-size: 40px;
+               color: var(--accent-blue);
+               margin-bottom: 20px;
+          }
+
+          .feature-name {
+               font-size: 20px;
+               margin-bottom: 15px;
+               color: var(--dark-blue);
+          }
+
+          .feature-text {
+               font-size: 14px;
+               color: #555;
+          }
+
+          .footer-container {
+               background-color: #1e3c72;
+               padding: 0;
+               width: 100%;
+          }
+
+          .main-footer {
+               background-color: #1e3c72;
+               display: flex;
+               justify-content: space-between;
+               align-items: center;
+               padding: 20px 10%;
+               border-top: 1px solid var(--soft-blue-bg);
+          }
+
+          .company-info {
+               text-align: left;
+               color: var(--text-primary);
+          }
+
+          .company-name {
+               font-weight: bold;
+               color: white;
+               font-size: 1.1rem;
+               margin-bottom: 5px;
+          }
+
+          .company-details {
+               color: white;
+               font-size: 0.9rem;
+               margin: 3px 0;
+          }
+
+          .company-copyright {
+               color: white;
+               font-size: 0.9rem;
+          }
+
+          .footer-logo {
+               width: 35px;
+               height: auto;
+          }
+
+          .footer-links {
+               text-align: right;
+          }
+
+          .footer-link {
+               display: block;
+               color: white;
+               text-decoration: none;
+               margin: 10px 0;
+               font-size: 0.9rem;
+               transition: all 0.3s ease;
+          }
+
+          .footer-link:hover {
+               color: var(--dark-blue);
+               transform: translateX(-5px);
+          }
+
+          .scroll-top {
+               position: fixed;
+               bottom: 30px;
+               right: 30px;
+               width: 50px;
+               height: 50px;
+               background-color: var(--dark-blue);
+               color: white;
+               border-radius: 50%;
+               display: flex;
+               align-items: center;
+               justify-content: center;
+               font-size: 20px;
+               cursor: pointer;
+               opacity: 0;
+               visibility: hidden;
+               transition: all 0.3s ease;
+               z-index: 1000;
+               box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+          }
+
+          .scroll-top.show {
+               opacity: 1;
+               visibility: visible;
+          }
+
+          .scroll-top:hover {
+               background-color: var(--accent-blue);
+               transform: translateY(-5px);
+          }
+
+          @media (max-width: 1024px) {
+               .features-container {
+                    grid-template-columns: repeat(2, 1fr);
+               }
+
+               .hero-title {
+                    font-size: 3rem;
+               }
+
+               .hero-container {
+                    grid-template-columns: 1fr;
+                    gap: 40px;
+                    text-align: center;
+               }
+
+               .hero-content {
+                    text-align: center;
+               }
+
+               .hero-stats {
+                    gap: 40px;
+               }
+          }
+
+          @media (max-width: 768px) {
+               .top-menu {
+                    display: none;
+                    position: absolute;
+                    top: 100%;
+                    left: 0;
+                    width: 100%;
+                    flex-direction: column;
+                    background-color: var(--light-blue);
+                    padding: 20px 0;
+                    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+                    gap: 15px;
+               }
+
+               .top-menu.show {
+                    display: flex;
+               }
+
+               .top-menu .menu-link {
+                    color: var(--dark-blue);
+                    padding: 10px 20px;
+               }
+
+               .mobile-menu-toggle {
+                    display: flex;
+               }
+
+               .hero-section {
+                    height: 100vh;
+                    padding: 20px;
+               }
+
+               .hero-container {
+                    padding: 0 20px;
+               }
+
+               .hero-title {
+                    font-size: 2.5rem;
+               }
+
+               .hero-buttons {
+                    flex-direction: column;
+                    gap: 15px;
+               }
+
+               .visual-container {
+                    width: 300px;
+                    height: 300px;
+               }
+
+               .commuter-gif {
+                    width: 200px;
+                    height: 200px;
+               }
+
+               .hero-stats {
+                    gap: 30px;
+                    flex-wrap: wrap;
+               }
+
+               .content-section,
+               .content-section:nth-child(even) {
+                    flex-direction: column;
+                    gap: 20px;
+               }
+
+               .section-image,
+               .section-text {
+                    width: 100%;
+               }
+
+               .section-image {
+                    height: 250px;
+               }
+
+               .main-footer {
+                    flex-direction: column;
+                    gap: 30px;
+                    text-align: center;
+               }
+
+               .company-info,
+               .footer-links {
+                    text-align: center;
+               }
+
+               .features-section {
+                    padding: 40px 15px;
+               }
+          }
+
+          @media (max-width: 480px) {
+               .features-container {
+                    grid-template-columns: 1fr;
+               }
+
+               .hero-title {
+                    font-size: 2rem;
+               }
+
+               .hero-subtitle {
+                    font-size: 1rem;
+               }
+
+               .hero-description {
+                    font-size: 1rem;
+               }
+
+               .visual-container {
+                    width: 250px;
+                    height: 250px;
+               }
+
+               .commuter-gif {
+                    width: 150px;
+                    height: 150px;
+               }
+
+               .section-title {
+                    font-size: 22px;
+               }
+
+               .section-paragraph {
+                    font-size: 14px;
+               }
+
+               .features-heading {
+                    font-size: 24px;
+               }
+          }
+     </style>
+</head>
+
+<body>
+     <div id="userDisplayName"
+          style="position:fixed;top:20px;right:180px;z-index:100;font-size:1.1em;font-weight:600;color:#2563eb;background:#fff;padding:8px 18px;border-radius:18px;box-shadow:0 2px 8px rgba(37,99,235,0.10);display:none;">
+     </div>
+     <header class="top-header">
+          <div class="site-logo flex items-center gap-4">
+               <a href="#"><img src="https://imgur.com/WGQwTEM.jpeg" alt="logo-trafix" width="150" height="140"></a>
+          </div>
+          <nav class="top-menu">
+               <a href="index.html" class="menu-link">Home</a>
+               <a href="login.html" id="userIconNav" class="menu-link"><img src="https://imgur.com/WGQwTEM.jpeg"
+                         alt="User"
+                         style="height:28px;width:28px;border-radius:50%;vertical-align:middle;object-fit:cover;"></a>
+               <a href="map-fullpage.html" class="menu-link">Map</a>
+          </nav>
+          <button class="mobile-menu-toggle" aria-label="Toggle menu">
+               <i class="fas fa-bars"></i>
+          </button>
+     </header>
+
+     <section class="hero-section">
+          <div class="hero-bg-elements">
+               <div class="floating-shape shape-1"></div>
+               <div class="floating-shape shape-2"></div>
+               <div class="floating-shape shape-3"></div>
+               <div class="floating-shape shape-4"></div>
+          </div>
+
+          <div class="hero-container">
+               <div class="hero-content">
+                    <div class="hero-subtitle">Navigate Smart, Travel Easy</div>
+                    <h1 class="hero-title">A Commuter's Guide</h1>
+                    <p class="hero-description">
+                         Your intelligent companion for seamless city navigation. Whether by jeep, bus, train, or on
+                         foot,
+                         discover the fastest routes and join a community of smart commuters.
+                    </p>
+                    <div class="hero-buttons">
+                         <a href="map-fullpage.html" class="button-primary">
+                              <i class="fas fa-route"></i>
+                              Start Your Journey
+                         </a>
+                    </div>
+               </div>
+
+               <div class="hero-visual">
+                    <div class="visual-container">
+                         <img src="https://i.pinimg.com/originals/26/c1/59/26c15924f3aa1205838247ab07221603.gif"
+                              alt="Animated commuter" class="commuter-gif">
+
+                         <div class="orbit-element orbit-1">
+                              <i class="fas fa-bus"></i>
+                         </div>
+                         <div class="orbit-element orbit-2">
+                              <i class="fas fa-train"></i>
+                         </div>
+                         <div class="orbit-element orbit-3">
+                              <i class="fas fa-walking"></i>
+                         </div>
+                         <div class="orbit-element orbit-4">
+                              <i class="fas fa-map-marker-alt"></i>
+                         </div>
+                    </div>
+               </div>
+          </div>
+
+          <div class="hero-stats">
+               <div class="stat-item">
+                    <div class="stat-number">...</div>
+                    <div class="stat-label">Daily Users</div>
+               </div>
+               <div class="stat-item">
+                    <div class="stat-number">...</div>
+                    <div class="stat-label">Routes Mapped</div>
+               </div>
+               <div class="stat-item">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">Support</div>
+               </div>
+          </div>
+     </section>
+
+     <div class="main-container">
+          <div class="content-section">
+               <div class="section-image" style="background-image: url('https://i.pinimg.com/1200x/fc/4f/e1/fc4fe18f52f17ebf87dd92fbec514322.jpg');
+                    background-position: center;">
+               </div>
+               <div class="section-text">
+                    <h2 class="section-title">WELCOME TO TRAFIX</h2>
+                    <p class="section-paragraph"> Your smart companion for navigating the city with ease. Whether you're
+                         commuting by jeep, bus, train, or on foot, Trafix helps you find the best routes from point A
+                         to B. Designed with everyday commuters in mind, we make travel simpler, faster, and more
+                         convenient. Let Trafix guide your journey, one ride at a time.
+                    </p>
+               </div>
+          </div>
+
+          <div class="content-section">
+               <div class="section-image"
+                    style="background-image: url('https://i.pinimg.com/736x/44/f1/ef/44f1ef20e3a99f6a3413ea4a802e63cf.jpg');">
+               </div>
+               <div class="section-text">
+                    <h2 class="section-title">COMMUNITY</h2>
+                    <p class="section-paragraph">At Trafix, we believe that commuting is more than just getting from one
+                         point to another – it's an experience that brings people together. Our online space is designed
+                         to be an extension of your daily ride, where Filipino commuters can connect, share helpful
+                         tips, and discover everything about their favorite routes. Join our community and navigate the
+                         city with confidence!
+                    </p>
+                    <a href="#" class="pink-button">Join Our Community</a>
+               </div>
+          </div>
+     </div>
+
+     <section class="features-section">
+          <h2 class="features-heading">Why Choose Trafix</h2>
+          <div class="features-container">
+               <div class="feature-box">
+                    <div class="feature-icon">
+                         <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h3 class="feature-name">Real-time Routes</h3>
+                    <p class="feature-text">Get accurate, up-to-the-minute information on public transportation routes
+                         and schedules across Quezon City and Metro Manila, helping you plan your journey efficiently.
+                    </p>
+               </div>
+               <div class="feature-box">
+                    <div class="feature-icon">
+                         <i class="fas fa-train"></i>
+                    </div>
+                    <h3 class="feature-name">Eco-Friendly Travel</h3>
+                    <p class="feature-text">Embrace sustainable commuting options within Metro Manila. Trafix promotes
+                         the use of buses, trains, and other public transport, contributing to a greener environment and
+                         reduced traffic congestion in Quezon City.</p>
+               </div>
+               <div class="feature-box">
+                    <div class="feature-icon">
+                         <i class="fas fa-route"></i>
+                    </div>
+                    <h3 class="feature-name">Seamless Journeys</h3>
+                    <p class="feature-text">Our user-friendly platform helps you discover the fastest and most
+                         convenient ways to navigate Quezon City and reach your destination within Metro Manila, making
+                         every trip smooth and stress-free.</p>
+               </div>
+               <div class="feature-box">
+                    <div class="feature-icon">
+                         <i class="fas fa-handshake"></i>
+                    </div>
+                    <h3 class="feature-name">Community First</h3>
+                    <p class="feature-text">Join a vibrant network of commuters in Quezon City and Metro Manila. Share
+                         your experiences, find local insights about routes and traffic conditions, and connect with
+                         fellow riders to make your daily travels more enjoyable and informed.</p>
+               </div>
+          </div>
+     </section>
+
+     <div class="footer-container">
+          <div class="main-footer">
+               <div class="company-info">
+                    <div class="company-name">TRAFIX </div>
+                    <div class="company-details">Email: @trafixph@gmail.com</div>
+                    <div class="company-details">Contact: 09456376077</div>
+                    <div class="company-details">Recto, Manila</div>
+               </div>
+               <div class="footer-links">
+                    <a href="#" class="footer-link">Privacy Policy</a>
+                    <a href="#" class="footer-link">Terms & Conditions</a>
+                    <a href="#" class="footer-link">Customer Support</a>
+               </div>
+          </div>
+     </div>
+
+     <button class="scroll-top" aria-label="Back to top">
+          <i class="fas fa-arrow-up"></i>
+     </button>
+
+     <script>
+          // Show logged-in user's name at the top right
+          function updateUserDisplayName() {
+               const el = document.getElementById('userDisplayName');
+               const name = localStorage.getItem('trafix_user_name');
+               if (localStorage.getItem('trafix_logged_in') === 'true' && name) {
+                    el.textContent = `Welcome, ${name}!`;
+                    el.style.display = 'block';
+               } else {
+                    el.textContent = '';
+                    el.style.display = 'none';
+               }
+          }
+          document.addEventListener('DOMContentLoaded', function () {
+               updateUserDisplayName();
+               // Set up user icon nav click for login/logout
+               const userIconNav = document.getElementById('userIconNav');
+               if (userIconNav) {
+                    userIconNav.onclick = function (e) {
+                         if (localStorage.getItem('trafix_logged_in') === 'true') {
+                              e.preventDefault();
+                              localStorage.setItem('trafix_logged_in', 'false');
+                              localStorage.removeItem('trafix_user_name');
+                              localStorage.removeItem('trafix_user_email');
+                              updateUserDisplayName();
+                              window.location.reload();
+                         } // else, default link to login.html
+                    };
+               }
+          });
+          window.addEventListener('storage', updateUserDisplayName);
+
+          window.onload = function () {
+               var scrollTopButton = document.querySelector('.scroll-top');
+               var mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+               var topMenu = document.querySelector('.top-menu');
+
+               window.onscroll = function () {
+                    if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                         scrollTopButton.classList.add('show');
+                    } else {
+                         scrollTopButton.classList.remove('show');
+                    }
+               };
+
+               scrollTopButton.onclick = function () {
+                    document.body.scrollTop = 0;
+                    document.documentElement.scrollTop = 0;
+               };
+
+               // Mobile menu toggle
+               mobileMenuToggle.addEventListener('click', function () {
+                    topMenu.classList.toggle('show');
+               });
+          };
+     </script>
+</body>
+
+</html>
